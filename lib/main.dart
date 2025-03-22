@@ -20,8 +20,28 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  int _selectedIndex = 0;
+
+  static const List<Widget> _pages = <Widget>[
+    MyHomePageContent(),
+    MapPage(),
+    LocationsPage(),
+    HelpPage(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,67 +49,71 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Scavenger Hunt'),
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.deepPurple,
-              ),
-              child: Text(
-                'Menu',
-                style: TextStyle(color: Colors.white, fontSize: 24),
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.home),
-              title: const Text('Home'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const MyHomePage()),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.map),
-              title: const Text('Map'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const MapPage()),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.location_on),
-              title: const Text('Locations'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LocationsPage()),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.help),
-              title: const Text('Help'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const HelpPage()),
-                );
-              },
-            ),
-          ],
-        ),
+      body: _pages[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed, // Ensure labels are always visible
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        selectedItemColor: Colors.deepPurple, // Set color for selected item
+        unselectedItemColor: const Color.fromARGB(255, 4, 4, 4), // Set color for unselected items
+        backgroundColor: Colors.white, // Set background color
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            label: 'Map',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.location_on),
+            label: 'Locations',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.help),
+            label: 'Help',
+          ),
+        ],
       ),
-      body: const Center(
-        child: Text(
-          'Welcome to the Scavenger Hunt App!',
-          style: TextStyle(fontSize: 20),
-        ),
+    );
+  }
+}
+
+class MyHomePageContent extends StatelessWidget {
+  const MyHomePageContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: const Color(0xFF461D7C), // Updated color to #461D7C
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 30.0, bottom: 20.0),
+            child: Center(
+              child: Image.asset(
+                'assets/fonts/images/LSU logo.png', // LSU logo
+                width: 150, // Adjust width as needed
+                height: 150, // Adjust height as needed
+              ),
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.all(30.0),
+            child: Center(
+              child: Text(
+                'Patrick F. Taylor Scavenger Hunt',
+                style: TextStyle(
+                  fontFamily: 'Proxima Nova',
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          ),
+          // Add other widgets below if needed
+        ],
       ),
     );
   }
@@ -104,11 +128,31 @@ class MapPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Map'),
       ),
-      body: const Center(
-        child: Text(
-          'This is the Map Page.',
-          style: TextStyle(fontSize: 20),
-        ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text(
+              'PFT Map',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Image.asset(
+                'assets/fonts/images/PFT Map.webp',
+                fit: BoxFit.contain, // Ensure the entire image is visible
+                width: double.infinity,
+                height: double.infinity,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
