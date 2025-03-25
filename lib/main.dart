@@ -420,6 +420,8 @@ class ItemPage extends StatelessWidget {
       return const Item4_1Page(); // Redirect to the custom page for Item 4.1
     } else if (title == 'Item 4.2') {
       return const Item4_2Page(); // Redirect to the custom page for Item 4.2
+    } else if (title == 'Item 2.1') {
+      return const Item2_1Page(); // Redirect to the custom page for Item 2.1
     }
     return Scaffold(
       appBar: AppBar(
@@ -779,6 +781,81 @@ class _Item4_2PageState extends State<Item4_2Page> {
             const SizedBox(height: 10),
             const Text(
               'What famous(?) quote was said by Herbert Henry Dow?',
+              style: TextStyle(fontSize: 18),
+            ),
+            const SizedBox(height: 20),
+            TextField(
+              controller: _controller,
+              decoration: const InputDecoration(
+                labelText: 'Your Answer',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _checkAnswer,
+              child: const Text('Submit'),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              _feedback,
+              style: const TextStyle(fontSize: 18, color: Colors.deepPurple),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Item2_1Page extends StatefulWidget {
+  const Item2_1Page({super.key});
+
+  @override
+  State<Item2_1Page> createState() => _Item2_1PageState();
+}
+
+class _Item2_1PageState extends State<Item2_1Page> {
+  final TextEditingController _controller = TextEditingController();
+  String _feedback = '';
+
+  void _checkAnswer() {
+    if (_controller.text.trim().toLowerCase() == 'improving lives. transforming louisiana. changing the world.') {
+      Provider.of<SolvedItemsNotifier>(context, listen: false)
+          .markAsSolved('Item 2.1');
+      setState(() {
+        _feedback = 'Correct! You solved the question!';
+      });
+    } else {
+      setState(() {
+        _feedback = 'Incorrect. Try again!';
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Short Answer Question'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Question:',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              'Right across from where ideas ignite, \n'
+              'I honor the names that made it right, \n'
+              'their impact is big, their message is clear: \n'
+              'a better world starts right here. \n'
+              'What motto do I hold dear?'
+              ,
               style: TextStyle(fontSize: 18),
             ),
             const SizedBox(height: 20),
