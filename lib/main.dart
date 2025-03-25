@@ -125,6 +125,7 @@ class MapPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF461D7C),
       appBar: AppBar(
         title: const Text('Map'),
       ),
@@ -170,7 +171,7 @@ class LocationsPage extends StatelessWidget {
       body: ListView(
         children: [
           ExpansionTile(
-            title: const Text('Location 1'),
+            title: const Text('The Commons'),
             children: [
               ListTile(
                 title: const Text('Item 1.1'),
@@ -208,7 +209,7 @@ class LocationsPage extends StatelessWidget {
             ],
           ),
           ExpansionTile(
-            title: const Text('Location 2'),
+            title: const Text('Roy O\' Martin Auditorium'),
             children: [
               ListTile(
                 title: const Text('Item 2.1'),
@@ -246,7 +247,7 @@ class LocationsPage extends StatelessWidget {
             ],
           ),
           ExpansionTile(
-            title: const Text('Location 3'),
+            title: const Text('Capstone Gallery'),
             children: [
               ListTile(
                 title: const Text('Item 3.1'),
@@ -284,7 +285,7 @@ class LocationsPage extends StatelessWidget {
             ],
           ),
           ExpansionTile(
-            title: const Text('Location 4'),
+            title: const Text('Cambre Atrium'),
             children: [
               ListTile(
                 title: const Text('Item 4.1'),
@@ -322,7 +323,7 @@ class LocationsPage extends StatelessWidget {
             ],
           ),
           ExpansionTile(
-            title: const Text('Location 5'),
+            title: const Text('Something on 3rd Floor'),
             children: [
               ListTile(
                 title: const Text('Item 5.1'),
