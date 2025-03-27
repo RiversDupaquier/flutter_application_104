@@ -104,32 +104,41 @@ class MyHomePageContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: const Color(0xFF461D7C), // Updated color to #461D7C
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: Stack(
+        alignment: Alignment.center, // Center all children
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 30.0, bottom: 20.0),
-            child: Center(
-              child: Image.asset(
-                'assets/fonts/images/LSU logo.png', // LSU logo
-                width: 150, // Adjust width as needed
-                height: 150, // Adjust height as needed
-              ),
-            ),
+          Image.asset(
+            'assets/fonts/images/patrick-f-taylor-hall.webp', // Patrick F. Taylor Hall image
+            width: 1200.0, // Make the image span the width of the screen
+            height: 500.0, // Make the image span the height of the screen
+            fit: BoxFit.cover, // Cover the entire screen
           ),
-          const Padding(
-            padding: EdgeInsets.all(30.0),
-            child: Center(
-              child: Text(
-                'Patrick F. Taylor Scavenger Hunt',
-                style: TextStyle(
-                  fontFamily: 'Proxima Nova',
-                  fontSize: 20,
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start, // Align the text at the top
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 100.0, bottom: 10.0),
+                child: Image.asset(
+                  'assets/fonts/images/LSU logo.png', // LSU logo
+                  width: 150, // Adjust width as needed
+                  height: 150, // Adjust height as needed
                 ),
               ),
-            ),
+              const Padding(
+                padding: EdgeInsets.all(30.0),
+                child: Text(
+                  'Patrick F. Taylor Scavenger Hunt',
+                  style: TextStyle(
+                    fontFamily: 'Proxima Nova',
+                    fontSize: 20,
+                    color: Colors.white, // Ensure text is visible on the image
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
           ),
-          // Add other widgets below if needed
         ],
       ),
     );
@@ -184,19 +193,26 @@ class LocationsPage extends StatelessWidget {
     final solvedItemsNotifier = Provider.of<SolvedItemsNotifier>(context);
 
     return Scaffold(
+      backgroundColor: const Color(0xFF461D7C), // Match the purple color from MapPage
       appBar: AppBar(
         title: const Text('Locations'),
       ),
       body: ListView(
         children: [
           ExpansionTile(
-            title: const Text('The Commons'),
+            title: const Text(
+              'The Commons',
+              style: TextStyle(color: Color(0xFFD29F13)), // Updated text color to #D29F13
+            ),
             children: [
               ListTile(
                 title: Row(
                   children: [
-                    const Text('Item 1.1'),
-                    if (solvedItemsNotifier.isSolved('Item 1.1'))
+                    const Text(
+                      'Landmarks',
+                      style: TextStyle(color: Color(0xFFF1EEDB)), // Updated text color
+                    ),
+                    if (solvedItemsNotifier.isSolved('Landmarks'))
                       const Icon(Icons.check, color: Colors.green),
                   ],
                 ),
@@ -212,8 +228,11 @@ class LocationsPage extends StatelessWidget {
               ListTile(
                 title: Row(
                   children: [
-                    const Text('Item 1.2'),
-                    if (solvedItemsNotifier.isSolved('Item 1.2'))
+                    const Text(
+                      'Food',
+                      style: TextStyle(color: Color(0xFFF1EEDB)), // Updated text color
+                    ),
+                    if (solvedItemsNotifier.isSolved('Food'))
                       const Icon(Icons.check, color: Colors.green),
                   ],
                 ),
@@ -229,8 +248,11 @@ class LocationsPage extends StatelessWidget {
               ListTile(
                 title: Row(
                   children: [
-                    const Text('Item 1.3'),
-                    if (solvedItemsNotifier.isSolved('Item 1.3'))
+                    const Text(
+                      'Riddle',
+                      style: TextStyle(color: Color(0xFFF1EEDB)), // Updated text color
+                    ),
+                    if (solvedItemsNotifier.isSolved('Riddle'))
                       const Icon(Icons.check, color: Colors.green),
                   ],
                 ),
@@ -246,37 +268,21 @@ class LocationsPage extends StatelessWidget {
             ],
           ),
           ExpansionTile(
-            title: const Text('Roy O\' Martin Auditorium'),
+            title: const Text(
+              'Roy O\' Martin Auditorium',
+              style: TextStyle(color: Color(0xFFD29F13)), // Updated text color
+            ),
             children: [
               ListTile(
-                title: const Text('Item 2.1'),
+                title: const Text(
+                  'Riddle #2',
+                  style: TextStyle(color: Color(0xFFF1EEDB)), // Updated text color
+                ),
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const ItemPage(title: 'Item 2.1'),
-                    ),
-                  );
-                },
-              ),
-              ListTile(
-                title: const Text('Item 2.2'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ItemPage(title: 'Item 2.2'),
-                    ),
-                  );
-                },
-              ),
-              ListTile(
-                title: const Text('Item 2.3'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ItemPage(title: 'Item 2.3'),
+                      builder: (context) => const ItemPage(title: 'Riddle #2'),
                     ),
                   );
                 },
@@ -284,37 +290,35 @@ class LocationsPage extends StatelessWidget {
             ],
           ),
           ExpansionTile(
-            title: const Text('Capstone Gallery'),
+            title: const Text(
+              '2nd Floor',
+              style: TextStyle(color: Color(0xFFD29F13)), // Updated text color
+            ),
             children: [
               ListTile(
-                title: const Text('Item 3.1'),
+                title: const Text(
+                  'Find the area',
+                  style: TextStyle(color: Color(0xFFF1EEDB)), // Updated text color
+                ),
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const ItemPage(title: 'Item 3.1'),
+                      builder: (context) => const ItemPage(title: 'Find the area'),
                     ),
                   );
                 },
               ),
               ListTile(
-                title: const Text('Item 3.2'),
+                title: const Text(
+                  'What day again?',
+                  style: TextStyle(color: Color(0xFFF1EEDB)), // Updated text color
+                ),
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const ItemPage(title: 'Item 3.2'),
-                    ),
-                  );
-                },
-              ),
-              ListTile(
-                title: const Text('Item 3.3'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ItemPage(title: 'Item 3.3'),
+                      builder: (context) => const ItemPage(title: 'What day again?'),
                     ),
                   );
                 },
@@ -322,37 +326,35 @@ class LocationsPage extends StatelessWidget {
             ],
           ),
           ExpansionTile(
-            title: const Text('Cambre Atrium'),
+            title: const Text(
+              'Cambre Atrium',
+              style: TextStyle(color: Color(0xFFD29F13)), // Updated text color
+            ),
             children: [
               ListTile(
-                title: const Text('Item 4.1'),
+                title: const Text(
+                  'How many?',
+                  style: TextStyle(color: Color(0xFFF1EEDB)), // Updated text color
+                ),
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const ItemPage(title: 'Item 4.1'),
+                      builder: (context) => const ItemPage(title: 'How many?'),
                     ),
                   );
                 },
               ),
               ListTile(
-                title: const Text('Item 4.2'),
+                title: const Text(
+                  'Famous quotes',
+                  style: TextStyle(color: Color(0xFFF1EEDB)), // Updated text color
+                ),
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const ItemPage(title: 'Item 4.2'),
-                    ),
-                  );
-                },
-              ),
-              ListTile(
-                title: const Text('Item 4.3'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ItemPage(title: 'Item 4.3'),
+                      builder: (context) => const ItemPage(title: 'Famous quotes'),
                     ),
                   );
                 },
@@ -360,37 +362,21 @@ class LocationsPage extends StatelessWidget {
             ],
           ),
           ExpansionTile(
-            title: const Text('Something on 3rd Floor'),
+            title: const Text(
+              '3rd Floor',
+              style: TextStyle(color: Color(0xFFD29F13)), // Updated text color
+            ),
             children: [
               ListTile(
-                title: const Text('Item 5.1'),
+                title: const Text(
+                  'Who are they?',
+                  style: TextStyle(color: Color(0xFFF1EEDB)), // Updated text color
+                ),
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const ItemPage(title: 'Item 5.1'),
-                    ),
-                  );
-                },
-              ),
-              ListTile(
-                title: const Text('Item 5.2'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ItemPage(title: 'Item 5.2'),
-                    ),
-                  );
-                },
-              ),
-              ListTile(
-                title: const Text('Item 5.3'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ItemPage(title: 'Item 5.3'),
+                      builder: (context) => const ItemPage(title: 'Who are they?'),
                     ),
                   );
                 },
@@ -410,27 +396,33 @@ class ItemPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (title == 'Item 1.1') {
+    if (title == 'Item 1.1' || title == 'Landmarks') { // Ensure "Landmarks" redirects to Item1_1Page
       return const Item1_3Page(); // Redirect to the custom page for Item 1.1
-    } else if (title == 'Item 1.2') {
+    } else if (title == 'Item 1.2' || title == 'Food') {
       return const Item1_2Page(); // Redirect to the custom page for Item 1.2
-    } else if (title == 'Item 1.3') {
+    } else if (title == 'Item 1.3' || title == 'Riddle') {
       return const Item1_1Page(); // Redirect to the custom page for Item 1.3
-    } else if (title == 'Item 4.1') {
+    } else if (title == 'Item 4.1' || title == 'How many?') {
       return const Item4_1Page(); // Redirect to the custom page for Item 4.1
-    } else if (title == 'Item 4.2') {
+    } else if (title == 'Item 4.2' || title == 'Famous quotes') {
       return const Item4_2Page(); // Redirect to the custom page for Item 4.2
-    } else if (title == 'Item 2.1') {
+    } else if (title == 'Item 2.1' || title == 'Riddle #2') {
       return const Item2_1Page(); // Redirect to the custom page for Item 2.1
+    } else if (title == 'Item 3.1' || title == 'Find the area') {
+      return const Item3_1Page(); // Redirect to the custom page for Item 3.1
+    } else if (title == 'Item 3.2' || title == 'What day again?') {
+      return const Item3_2Page(); // Redirect to the custom page for Item 3.2
+    } else if (title == 'Item 5.1' || title == 'Who are they?') {
+      return const Item5_1Page(); // Redirect to the custom page for Item 5.1
     }
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
       ),
-      body: Center(
+      body: const Center(
         child: Text(
-          'This is the page for $title.',
-          style: const TextStyle(fontSize: 20),
+          'This item does not have a custom page.',
+          style: TextStyle(fontSize: 20),
         ),
       ),
     );
@@ -465,6 +457,7 @@ class _Item1_1PageState extends State<Item1_1Page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF461D7C), // Updated background color
       appBar: AppBar(
         title: const Text('Riddle'),
       ),
@@ -483,7 +476,7 @@ class _Item1_1PageState extends State<Item1_1Page> {
               'Behind the stairs, I’m your go-to spot to try. \n'
               'Relax, recharge, or find your team, \n'
               'What’s the space that fulfills your dream?',
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(fontSize: 18, color: Color(0xFFF1EEDB)),
             ),
             const SizedBox(height: 20),
             TextField(
@@ -537,6 +530,7 @@ class _Item1_2PageState extends State<Item1_2Page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF461D7C), // Updated background color
       appBar: AppBar(
         title: const Text('Multiple Choice Question'),
       ),
@@ -599,7 +593,7 @@ class _Item1_3PageState extends State<Item1_3Page> {
   void _checkAnswer(String selectedAnswer) {
     if (selectedAnswer == 'Choice 1') {
       Provider.of<SolvedItemsNotifier>(context, listen: false)
-          .markAsSolved('Item 1.3');
+          .markAsSolved('Landmarks');
       setState(() {
         _feedback = 'Correct! You selected the right answer!';
       });
@@ -613,6 +607,7 @@ class _Item1_3PageState extends State<Item1_3Page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF461D7C), // Updated background color
       appBar: AppBar(
         title: const Text('Multiple Choice Question'),
       ),
@@ -689,6 +684,7 @@ class _Item4_1PageState extends State<Item4_1Page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF461D7C), // Updated background color
       appBar: AppBar(
         title: const Text('Multiple Choice Question'),
       ),
@@ -766,6 +762,7 @@ class _Item4_2PageState extends State<Item4_2Page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF461D7C), // Updated background color
       appBar: AppBar(
         title: const Text('Short Answer Question'),
       ),
@@ -836,6 +833,7 @@ class _Item2_1PageState extends State<Item2_1Page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF461D7C), // Updated background color
       appBar: AppBar(
         title: const Text('Short Answer Question'),
       ),
@@ -856,6 +854,225 @@ class _Item2_1PageState extends State<Item2_1Page> {
               'a better world starts right here. \n'
               'What motto do I hold dear?'
               ,
+              style: TextStyle(fontSize: 18),
+            ),
+            const SizedBox(height: 20),
+            TextField(
+              controller: _controller,
+              decoration: const InputDecoration(
+                labelText: 'Your Answer',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _checkAnswer,
+              child: const Text('Submit'),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              _feedback,
+              style: const TextStyle(fontSize: 18, color: Colors.deepPurple),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Item3_1Page extends StatefulWidget {
+  const Item3_1Page({super.key});
+
+  @override
+  State<Item3_1Page> createState() => _Item3_1PageState();
+}
+
+class _Item3_1PageState extends State<Item3_1Page> {
+  String _feedback = '';
+
+  void _checkAnswer(String selectedAnswer) {
+    if (selectedAnswer == 'Choice 2') {
+      Provider.of<SolvedItemsNotifier>(context, listen: false)
+          .markAsSolved('Item 3.1');
+      setState(() {
+        _feedback = 'Correct! You selected the right answer!';
+      });
+    } else {
+      setState(() {
+        _feedback = 'Incorrect. Try again!';
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFF461D7C), // Updated background color
+      appBar: AppBar(
+        title: const Text('Multiple Choice Question'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Text(
+              'Question:',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              'There is a car somewhere in PFT. Where can that car be found?',
+              style: TextStyle(fontSize: 18),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () => _checkAnswer('Choice 1'),
+              child: const Text('2219'),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () => _checkAnswer('Choice 2'),
+              child: const Text('2215'),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () => _checkAnswer('Choice 3'),
+              child: const Text('2240'),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () => _checkAnswer('Choice 4'),
+              child: const Text('You\'re lying, there is no car in PFT!'),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              _feedback,
+              style: const TextStyle(fontSize: 18, color: Colors.deepPurple),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Item3_2Page extends StatefulWidget {
+  const Item3_2Page({super.key});
+
+  @override
+  State<Item3_2Page> createState() => _Item3_2PageState();
+}
+
+class _Item3_2PageState extends State<Item3_2Page> {
+  final TextEditingController _controller = TextEditingController();
+  String _feedback = '';
+
+  void _checkAnswer() {
+    if (_controller.text.trim().toLowerCase() == 'friday') {
+      Provider.of<SolvedItemsNotifier>(context, listen: false)
+          .markAsSolved('Item 3.2');
+      setState(() {
+        _feedback = 'Correct! You solved the question!';
+      });
+    } else {
+      setState(() {
+        _feedback = 'Incorrect. Try again!';
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFF461D7C), // Updated background color
+      appBar: AppBar(
+        title: const Text('Short Answer Question'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Question:',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              'The 2326 Lab is only open on a certain day. What day is that?',
+              style: TextStyle(fontSize: 18),
+            ),
+            const SizedBox(height: 20),
+            TextField(
+              controller: _controller,
+              decoration: const InputDecoration(
+                labelText: 'Your Answer',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _checkAnswer,
+              child: const Text('Submit'),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              _feedback,
+              style: const TextStyle(fontSize: 18, color: Colors.deepPurple),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Item5_1Page extends StatefulWidget {
+  const Item5_1Page({super.key});
+
+  @override
+  State<Item5_1Page> createState() => _Item5_1PageState();
+}
+
+class _Item5_1PageState extends State<Item5_1Page> {
+  final TextEditingController _controller = TextEditingController();
+  String _feedback = '';
+
+  void _checkAnswer() {
+    if (_controller.text.trim().toLowerCase() == 'benjamin c. craft and murray f. hawkins, jr.') { // Fixed answer validation
+      Provider.of<SolvedItemsNotifier>(context, listen: false)
+          .markAsSolved('Item 5.1');
+      setState(() {
+        _feedback = 'Correct! You solved the question!';
+      });
+    } else {
+      setState(() {
+        _feedback = 'Incorrect. Try again!';
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFF461D7C), // Updated background color
+      appBar: AppBar(
+        title: const Text('Short Answer Question'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Question:',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              'There are two distinct individuals who have busts on them showcased on the 3rd floor. Who are these individuals? (write their names exactly as written, use "and" to separate their names)',
               style: TextStyle(fontSize: 18),
             ),
             const SizedBox(height: 20),
