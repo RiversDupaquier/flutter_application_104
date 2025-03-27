@@ -152,11 +152,23 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
-  bool _showSecondFloor = false;
+  int _currentMapIndex = 0;
 
-  void _toggleMap() {
+  final List<String> _mapImages = [
+    'assets/fonts/images/PFT Map 1st Floor.png',
+    'assets/fonts/images/PFT Map 2nd Floor.png',
+    'assets/fonts/images/PFT Map 3rd Floor.png',
+  ];
+
+  final List<String> _mapLabels = [
+    '1st Floor Map',
+    '2nd Floor Map',
+    '3rd Floor Map',
+  ];
+
+  void _nextMap() {
     setState(() {
-      _showSecondFloor = !_showSecondFloor;
+      _currentMapIndex = (_currentMapIndex + 1) % _mapImages.length;
     });
   }
 
@@ -185,9 +197,7 @@ class _MapPageState extends State<MapPage> {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Image.asset(
-                _showSecondFloor
-                    ? 'assets/fonts/images/PFT Map 2nd Floor.webp'
-                    : 'assets/fonts/images/PFT Map.webp',
+                _mapImages[_currentMapIndex],
                 fit: BoxFit.contain, // Ensure the entire image is visible
                 width: double.infinity,
                 height: double.infinity,
@@ -197,10 +207,8 @@ class _MapPageState extends State<MapPage> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton(
-              onPressed: _toggleMap,
-              child: Text(
-                _showSecondFloor ? 'Switch to 1st Floor Map' : 'Switch to 2nd Floor Map',
-              ),
+              onPressed: _nextMap,
+              child: Text('Switch to ${_mapLabels[(_currentMapIndex + 1) % _mapImages.length]}'),
             ),
           ),
         ],
