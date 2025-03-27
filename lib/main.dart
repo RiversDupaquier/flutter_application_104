@@ -19,6 +19,10 @@ class SolvedItemsNotifier extends ChangeNotifier {
     _solvedItems[item] = true;
     notifyListeners();
   }
+
+  bool isSectionCompleted(List<String> items) {
+    return items.every((item) => isSolved(item));
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -51,7 +55,6 @@ class _MyHomePageState extends State<MyHomePage> {
     MyHomePageContent(),
     MapPage(),
     LocationsPage(),
-    HelpPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -86,10 +89,6 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.location_on),
             label: 'Locations',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.help),
-            label: 'Help',
           ),
         ],
       ),
@@ -129,7 +128,7 @@ class MyHomePageContent extends StatelessWidget {
                 child: Text(
                   'Patrick F. Taylor Scavenger Hunt',
                   style: TextStyle(
-                    fontFamily: 'Proxima Nova',
+                    fontFamily: 'Proxima Nova', // Updated font family
                     fontSize: 20,
                     color: Colors.white, // Ensure text is visible on the image
                     fontWeight: FontWeight.bold,
@@ -145,8 +144,21 @@ class MyHomePageContent extends StatelessWidget {
   }
 }
 
-class MapPage extends StatelessWidget {
+class MapPage extends StatefulWidget {
   const MapPage({super.key});
+
+  @override
+  State<MapPage> createState() => _MapPageState();
+}
+
+class _MapPageState extends State<MapPage> {
+  bool _showSecondFloor = false;
+
+  void _toggleMap() {
+    setState(() {
+      _showSecondFloor = !_showSecondFloor;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -163,6 +175,7 @@ class MapPage extends StatelessWidget {
             child: Text(
               'PFT Map',
               style: TextStyle(
+                fontFamily: 'Proxima Nova', // Updated font family
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
@@ -172,10 +185,21 @@ class MapPage extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Image.asset(
-                'assets/fonts/images/PFT Map.webp',
+                _showSecondFloor
+                    ? 'assets/fonts/images/PFT Map 2nd Floor.webp'
+                    : 'assets/fonts/images/PFT Map.webp',
                 fit: BoxFit.contain, // Ensure the entire image is visible
                 width: double.infinity,
                 height: double.infinity,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ElevatedButton(
+              onPressed: _toggleMap,
+              child: Text(
+                _showSecondFloor ? 'Switch to 1st Floor Map' : 'Switch to 2nd Floor Map',
               ),
             ),
           ),
@@ -200,9 +224,18 @@ class LocationsPage extends StatelessWidget {
       body: ListView(
         children: [
           ExpansionTile(
-            title: const Text(
-              'The Commons',
-              style: TextStyle(color: Color(0xFFD29F13)), // Updated text color to #D29F13
+            title: Row(
+              children: [
+                const Text(
+                  'The Commons',
+                  style: TextStyle(
+                    fontFamily: 'Proxima Nova', // Updated font family
+                    color: Color(0xFFD29F13), // Updated text color to #D29F13
+                  ),
+                ),
+                if (solvedItemsNotifier.isSectionCompleted(['Landmarks', 'Food', 'Riddle']))
+                  const Icon(Icons.check, color: Colors.green), // Section checkmark
+              ],
             ),
             children: [
               ListTile(
@@ -210,9 +243,12 @@ class LocationsPage extends StatelessWidget {
                   children: [
                     const Text(
                       'Landmarks',
-                      style: TextStyle(color: Color(0xFFF1EEDB)), // Updated text color
+                      style: TextStyle(
+                        fontFamily: 'Proxima Nova', // Updated font family
+                        color: Color(0xFFF1EEDB), // Updated text color
+                      ),
                     ),
-                    if (solvedItemsNotifier.isSolved('Landmarks'))
+                    if (solvedItemsNotifier.isSolved('Riddle'))
                       const Icon(Icons.check, color: Colors.green),
                   ],
                 ),
@@ -230,7 +266,10 @@ class LocationsPage extends StatelessWidget {
                   children: [
                     const Text(
                       'Food',
-                      style: TextStyle(color: Color(0xFFF1EEDB)), // Updated text color
+                      style: TextStyle(
+                        fontFamily: 'Proxima Nova', // Updated font family
+                        color: Color(0xFFF1EEDB), // Updated text color
+                      ),
                     ),
                     if (solvedItemsNotifier.isSolved('Food'))
                       const Icon(Icons.check, color: Colors.green),
@@ -250,9 +289,12 @@ class LocationsPage extends StatelessWidget {
                   children: [
                     const Text(
                       'Riddle',
-                      style: TextStyle(color: Color(0xFFF1EEDB)), // Updated text color
+                      style: TextStyle(
+                        fontFamily: 'Proxima Nova', // Updated font family
+                        color: Color(0xFFF1EEDB), // Updated text color
+                      ),
                     ),
-                    if (solvedItemsNotifier.isSolved('Riddle'))
+                    if (solvedItemsNotifier.isSolved('Landmarks'))
                       const Icon(Icons.check, color: Colors.green),
                   ],
                 ),
@@ -268,15 +310,33 @@ class LocationsPage extends StatelessWidget {
             ],
           ),
           ExpansionTile(
-            title: const Text(
-              'Roy O\' Martin Auditorium',
-              style: TextStyle(color: Color(0xFFD29F13)), // Updated text color
+            title: Row(
+              children: [
+                const Text(
+                  'Roy O\' Martin Auditorium',
+                  style: TextStyle(
+                    fontFamily: 'Proxima Nova', // Updated font family
+                    color: Color(0xFFD29F13), // Updated text color
+                  ),
+                ),
+                if (solvedItemsNotifier.isSectionCompleted(['Riddle #2']))
+                  const Icon(Icons.check, color: Colors.green), // Section checkmark
+              ],
             ),
             children: [
               ListTile(
-                title: const Text(
-                  'Riddle #2',
-                  style: TextStyle(color: Color(0xFFF1EEDB)), // Updated text color
+                title: Row(
+                  children: [
+                    const Text(
+                      'Riddle #2',
+                      style: TextStyle(
+                        fontFamily: 'Proxima Nova', // Updated font family
+                        color: Color(0xFFF1EEDB), // Updated text color
+                      ),
+                    ),
+                    if (solvedItemsNotifier.isSolved('Riddle #2'))
+                      const Icon(Icons.check, color: Colors.green),
+                  ],
                 ),
                 onTap: () {
                   Navigator.push(
@@ -290,15 +350,33 @@ class LocationsPage extends StatelessWidget {
             ],
           ),
           ExpansionTile(
-            title: const Text(
-              '2nd Floor',
-              style: TextStyle(color: Color(0xFFD29F13)), // Updated text color
+            title: Row(
+              children: [
+                const Text(
+                  '2nd Floor',
+                  style: TextStyle(
+                    fontFamily: 'Proxima Nova', // Updated font family
+                    color: Color(0xFFD29F13), // Updated text color
+                  ),
+                ),
+                if (solvedItemsNotifier.isSectionCompleted(['Find the area', 'What day again?']))
+                  const Icon(Icons.check, color: Colors.green), // Section checkmark
+              ],
             ),
             children: [
               ListTile(
-                title: const Text(
-                  'Find the area',
-                  style: TextStyle(color: Color(0xFFF1EEDB)), // Updated text color
+                title: Row(
+                  children: [
+                    const Text(
+                      'Find the area',
+                      style: TextStyle(
+                        fontFamily: 'Proxima Nova', // Updated font family
+                        color: Color(0xFFF1EEDB), // Updated text color
+                      ),
+                    ),
+                    if (solvedItemsNotifier.isSolved('Find the area'))
+                      const Icon(Icons.check, color: Colors.green),
+                  ],
                 ),
                 onTap: () {
                   Navigator.push(
@@ -310,9 +388,18 @@ class LocationsPage extends StatelessWidget {
                 },
               ),
               ListTile(
-                title: const Text(
-                  'What day again?',
-                  style: TextStyle(color: Color(0xFFF1EEDB)), // Updated text color
+                title: Row(
+                  children: [
+                    const Text(
+                      'What day again?',
+                      style: TextStyle(
+                        fontFamily: 'Proxima Nova', // Updated font family
+                        color: Color(0xFFF1EEDB), // Updated text color
+                      ),
+                    ),
+                    if (solvedItemsNotifier.isSolved('What day again?'))
+                      const Icon(Icons.check, color: Colors.green),
+                  ],
                 ),
                 onTap: () {
                   Navigator.push(
@@ -326,15 +413,33 @@ class LocationsPage extends StatelessWidget {
             ],
           ),
           ExpansionTile(
-            title: const Text(
-              'Cambre Atrium',
-              style: TextStyle(color: Color(0xFFD29F13)), // Updated text color
+            title: Row(
+              children: [
+                const Text(
+                  'Cambre Atrium',
+                  style: TextStyle(
+                    fontFamily: 'Proxima Nova', // Updated font family
+                    color: Color(0xFFD29F13), // Updated text color
+                  ),
+                ),
+                if (solvedItemsNotifier.isSectionCompleted(['How many?', 'Famous quotes']))
+                  const Icon(Icons.check, color: Colors.green), // Section checkmark
+              ],
             ),
             children: [
               ListTile(
-                title: const Text(
-                  'How many?',
-                  style: TextStyle(color: Color(0xFFF1EEDB)), // Updated text color
+                title: Row(
+                  children: [
+                    const Text(
+                      'How many?',
+                      style: TextStyle(
+                        fontFamily: 'Proxima Nova', // Updated font family
+                        color: Color(0xFFF1EEDB), // Updated text color
+                      ),
+                    ),
+                    if (solvedItemsNotifier.isSolved('How many?'))
+                      const Icon(Icons.check, color: Colors.green),
+                  ],
                 ),
                 onTap: () {
                   Navigator.push(
@@ -346,9 +451,18 @@ class LocationsPage extends StatelessWidget {
                 },
               ),
               ListTile(
-                title: const Text(
-                  'Famous quotes',
-                  style: TextStyle(color: Color(0xFFF1EEDB)), // Updated text color
+                title: Row(
+                  children: [
+                    const Text(
+                      'Famous quotes',
+                      style: TextStyle(
+                        fontFamily: 'Proxima Nova', // Updated font family
+                        color: Color(0xFFF1EEDB), // Updated text color
+                      ),
+                    ),
+                    if (solvedItemsNotifier.isSolved('Famous quotes'))
+                      const Icon(Icons.check, color: Colors.green),
+                  ],
                 ),
                 onTap: () {
                   Navigator.push(
@@ -362,15 +476,33 @@ class LocationsPage extends StatelessWidget {
             ],
           ),
           ExpansionTile(
-            title: const Text(
-              '3rd Floor',
-              style: TextStyle(color: Color(0xFFD29F13)), // Updated text color
+            title: Row(
+              children: [
+                const Text(
+                  '3rd Floor',
+                  style: TextStyle(
+                    fontFamily: 'Proxima Nova', // Updated font family
+                    color: Color(0xFFD29F13), // Updated text color
+                  ),
+                ),
+                if (solvedItemsNotifier.isSectionCompleted(['Who are they?']))
+                  const Icon(Icons.check, color: Colors.green), // Section checkmark
+              ],
             ),
             children: [
               ListTile(
-                title: const Text(
-                  'Who are they?',
-                  style: TextStyle(color: Color(0xFFF1EEDB)), // Updated text color
+                title: Row(
+                  children: [
+                    const Text(
+                      'Who are they?',
+                      style: TextStyle(
+                        fontFamily: 'Proxima Nova', // Updated font family
+                        color: Color(0xFFF1EEDB), // Updated text color
+                      ),
+                    ),
+                    if (solvedItemsNotifier.isSolved('Who are they?'))
+                      const Icon(Icons.check, color: Colors.green),
+                  ],
                 ),
                 onTap: () {
                   Navigator.push(
@@ -439,17 +571,25 @@ class Item1_1Page extends StatefulWidget {
 class _Item1_1PageState extends State<Item1_1Page> {
   final TextEditingController _controller = TextEditingController();
   String _feedback = '';
+  int _attempts = 0;
+  bool _showHint = false;
 
   void _checkAnswer() {
     if (_controller.text.trim().toLowerCase() == 'the commons') {
       Provider.of<SolvedItemsNotifier>(context, listen: false)
-          .markAsSolved('Item 1.1');
+          .markAsSolved('Landmarks'); // Mark as solved
       setState(() {
         _feedback = 'Correct! You solved the riddle!';
+        _attempts = 0; // Reset attempts
+        _showHint = false; // Hide hint
       });
     } else {
       setState(() {
         _feedback = 'Incorrect. Try again!';
+        _attempts++;
+        if (_attempts >= 3) {
+          _showHint = true; // Show hint after 3 incorrect attempts
+        }
       });
     }
   }
@@ -468,7 +608,12 @@ class _Item1_1PageState extends State<Item1_1Page> {
           children: [
             const Text(
               'Riddle:',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontFamily: 'Proxima Nova', // Updated font family
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFFF1EEDB),
+              ),
             ),
             const SizedBox(height: 10),
             const Text(
@@ -476,15 +621,21 @@ class _Item1_1PageState extends State<Item1_1Page> {
               'Behind the stairs, I’m your go-to spot to try. \n'
               'Relax, recharge, or find your team, \n'
               'What’s the space that fulfills your dream?',
-              style: TextStyle(fontSize: 18, color: Color(0xFFF1EEDB)),
+              style: TextStyle(
+                fontFamily: 'Proxima Nova', // Updated font family
+                fontSize: 18,
+                color: Color(0xFFF1EEDB),
+              ),
             ),
             const SizedBox(height: 20),
             TextField(
               controller: _controller,
               decoration: const InputDecoration(
                 labelText: 'Your Answer',
+                labelStyle: TextStyle(color: Color(0xFFF1EEDB)), // Updated label color
                 border: OutlineInputBorder(),
               ),
+              style: const TextStyle(color: Color(0xFFF1EEDB)), // Updated input text color
             ),
             const SizedBox(height: 20),
             ElevatedButton(
@@ -494,8 +645,19 @@ class _Item1_1PageState extends State<Item1_1Page> {
             const SizedBox(height: 20),
             Text(
               _feedback,
-              style: const TextStyle(fontSize: 18, color: Colors.deepPurple),
+              style: const TextStyle(fontSize: 18, color: Color(0xFFF1EEDB)), // Updated color
             ),
+            if (_showHint) ...[
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    _feedback = 'Hint: It\'s where you are!';
+                  });
+                },
+                child: const Text('Show Hint'),
+              ),
+            ],
           ],
         ),
       ),
@@ -516,7 +678,7 @@ class _Item1_2PageState extends State<Item1_2Page> {
   void _checkAnswer(String selectedAnswer) {
     if (selectedAnswer == 'Choice 3') {
       Provider.of<SolvedItemsNotifier>(context, listen: false)
-          .markAsSolved('Item 1.2');
+          .markAsSolved('Food'); // Mark as solved
       setState(() {
         _feedback = 'Correct! You selected the right answer!';
       });
@@ -541,12 +703,21 @@ class _Item1_2PageState extends State<Item1_2Page> {
           children: [
             const Text(
               'Question:',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontFamily: 'Proxima Nova', // Updated font family
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFFF1EEDB),
+              ),
             ),
             const SizedBox(height: 10),
             const Text(
               'Which of these items are labeled "In Season" in Panera Bread?',
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(
+                fontFamily: 'Proxima Nova', // Updated font family
+                fontSize: 18,
+                color: Color(0xFFF1EEDB),
+              ),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
@@ -571,7 +742,7 @@ class _Item1_2PageState extends State<Item1_2Page> {
             const SizedBox(height: 20),
             Text(
               _feedback,
-              style: const TextStyle(fontSize: 18, color: Colors.deepPurple),
+              style: const TextStyle(fontSize: 18, color: Color(0xFFF1EEDB)), // Updated color
             ),
           ],
         ),
@@ -593,7 +764,7 @@ class _Item1_3PageState extends State<Item1_3Page> {
   void _checkAnswer(String selectedAnswer) {
     if (selectedAnswer == 'Choice 1') {
       Provider.of<SolvedItemsNotifier>(context, listen: false)
-          .markAsSolved('Landmarks');
+          .markAsSolved('Riddle'); // Mark as solved
       setState(() {
         _feedback = 'Correct! You selected the right answer!';
       });
@@ -618,12 +789,21 @@ class _Item1_3PageState extends State<Item1_3Page> {
           children: [
             const Text(
               'Question:',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontFamily: 'Proxima Nova', // Updated font family
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFFF1EEDB),
+              ),
             ),
             const SizedBox(height: 10),
             const Text(
               'What are the words written on the statue DIRECTLY behind the Capstone Gallery Stairs?',
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(
+                fontFamily: 'Proxima Nova', // Updated font family
+                fontSize: 18,
+                color: Color(0xFFF1EEDB),
+              ),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
@@ -648,7 +828,7 @@ class _Item1_3PageState extends State<Item1_3Page> {
             const SizedBox(height: 20),
             Text(
               _feedback,
-              style: const TextStyle(fontSize: 18, color: Colors.deepPurple),
+              style: const TextStyle(fontSize: 18, color: Color(0xFFF1EEDB)), // Updated color
             ),
           ],
         ),
@@ -670,7 +850,7 @@ class _Item4_1PageState extends State<Item4_1Page> {
   void _checkAnswer(String selectedAnswer) {
     if (selectedAnswer == 'Choice 4') {
       Provider.of<SolvedItemsNotifier>(context, listen: false)
-          .markAsSolved('Item 4.1');
+          .markAsSolved('How many?'); // Mark as solved
       setState(() {
         _feedback = 'Correct! You selected the right answer!';
       });
@@ -695,12 +875,21 @@ class _Item4_1PageState extends State<Item4_1Page> {
           children: [
             const Text(
               'Question:',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontFamily: 'Proxima Nova', // Updated font family
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFFF1EEDB),
+              ),
             ),
             const SizedBox(height: 10),
             const Text(
               'How many trashcans and recycle bins (all together) are in the Cambre Atrium?',
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(
+                fontFamily: 'Proxima Nova', // Updated font family
+                fontSize: 18,
+                color: Color(0xFFF1EEDB),
+              ),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
@@ -725,7 +914,7 @@ class _Item4_1PageState extends State<Item4_1Page> {
             const SizedBox(height: 20),
             Text(
               _feedback,
-              style: const TextStyle(fontSize: 18, color: Colors.deepPurple),
+              style: const TextStyle(fontSize: 18, color: Color(0xFFF1EEDB)), // Updated color
             ),
           ],
         ),
@@ -748,7 +937,7 @@ class _Item4_2PageState extends State<Item4_2Page> {
   void _checkAnswer() {
     if (_controller.text.trim().toLowerCase() == 'if you can\'t do it better, why do it?') {
       Provider.of<SolvedItemsNotifier>(context, listen: false)
-          .markAsSolved('Item 4.2');
+          .markAsSolved('Famous quotes'); // Mark as solved
       setState(() {
         _feedback = 'Correct! You solved the question!';
       });
@@ -773,20 +962,31 @@ class _Item4_2PageState extends State<Item4_2Page> {
           children: [
             const Text(
               'Question:',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontFamily: 'Proxima Nova', // Updated font family
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFFF1EEDB),
+              ),
             ),
             const SizedBox(height: 10),
             const Text(
               'What famous(?) quote was said by Herbert Henry Dow?',
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(
+                fontFamily: 'Proxima Nova', // Updated font family
+                fontSize: 18,
+                color: Color(0xFFF1EEDB),
+              ),
             ),
             const SizedBox(height: 20),
             TextField(
               controller: _controller,
               decoration: const InputDecoration(
                 labelText: 'Your Answer',
+                labelStyle: TextStyle(color: Color(0xFFF1EEDB)), // Updated label color
                 border: OutlineInputBorder(),
               ),
+              style: const TextStyle(color: Color(0xFFF1EEDB)), // Updated input text color
             ),
             const SizedBox(height: 20),
             ElevatedButton(
@@ -796,7 +996,7 @@ class _Item4_2PageState extends State<Item4_2Page> {
             const SizedBox(height: 20),
             Text(
               _feedback,
-              style: const TextStyle(fontSize: 18, color: Colors.deepPurple),
+              style: const TextStyle(fontSize: 18, color: Color(0xFFF1EEDB)), // Updated color
             ),
           ],
         ),
@@ -815,17 +1015,25 @@ class Item2_1Page extends StatefulWidget {
 class _Item2_1PageState extends State<Item2_1Page> {
   final TextEditingController _controller = TextEditingController();
   String _feedback = '';
+  int _attempts = 0;
+  bool _showHint = false;
 
   void _checkAnswer() {
     if (_controller.text.trim().toLowerCase() == 'improving lives. transforming louisiana. changing the world.') {
       Provider.of<SolvedItemsNotifier>(context, listen: false)
-          .markAsSolved('Item 2.1');
+          .markAsSolved('Riddle #2'); // Mark as solved
       setState(() {
         _feedback = 'Correct! You solved the question!';
+        _attempts = 0; // Reset attempts
+        _showHint = false; // Hide hint
       });
     } else {
       setState(() {
         _feedback = 'Incorrect. Try again!';
+        _attempts++;
+        if (_attempts >= 3) {
+          _showHint = true; // Show hint after 3 incorrect attempts
+        }
       });
     }
   }
@@ -843,8 +1051,13 @@ class _Item2_1PageState extends State<Item2_1Page> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Question:',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              'Riddle:',
+              style: TextStyle(
+                fontFamily: 'Proxima Nova', // Updated font family
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFFF1EEDB),
+              ),
             ),
             const SizedBox(height: 10),
             const Text(
@@ -854,15 +1067,21 @@ class _Item2_1PageState extends State<Item2_1Page> {
               'a better world starts right here. \n'
               'What motto do I hold dear?'
               ,
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(
+                fontFamily: 'Proxima Nova', // Updated font family
+                fontSize: 18,
+                color: Color(0xFFF1EEDB),
+              ),
             ),
             const SizedBox(height: 20),
             TextField(
               controller: _controller,
               decoration: const InputDecoration(
                 labelText: 'Your Answer',
+                labelStyle: TextStyle(color: Color(0xFFF1EEDB)), // Updated label color
                 border: OutlineInputBorder(),
               ),
+              style: const TextStyle(color: Color(0xFFF1EEDB)), // Updated input text color
             ),
             const SizedBox(height: 20),
             ElevatedButton(
@@ -872,8 +1091,19 @@ class _Item2_1PageState extends State<Item2_1Page> {
             const SizedBox(height: 20),
             Text(
               _feedback,
-              style: const TextStyle(fontSize: 18, color: Colors.deepPurple),
+              style: const TextStyle(fontSize: 18, color: Color(0xFFF1EEDB)),
             ),
+            if (_showHint) ...[
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    _feedback = 'Hint: Examine the Donor Wall closely. There is something there that isn\'t like the others...';
+                  });
+                },
+                child: const Text('Show Hint'),
+              ),
+            ],
           ],
         ),
       ),
@@ -894,7 +1124,7 @@ class _Item3_1PageState extends State<Item3_1Page> {
   void _checkAnswer(String selectedAnswer) {
     if (selectedAnswer == 'Choice 2') {
       Provider.of<SolvedItemsNotifier>(context, listen: false)
-          .markAsSolved('Item 3.1');
+          .markAsSolved('Find the area'); // Mark as solved
       setState(() {
         _feedback = 'Correct! You selected the right answer!';
       });
@@ -919,12 +1149,21 @@ class _Item3_1PageState extends State<Item3_1Page> {
           children: [
             const Text(
               'Question:',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontFamily: 'Proxima Nova', // Updated font family
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFFF1EEDB),
+              ),
             ),
             const SizedBox(height: 10),
             const Text(
               'There is a car somewhere in PFT. Where can that car be found?',
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(
+                fontFamily: 'Proxima Nova', // Updated font family
+                fontSize: 18,
+                color: Color(0xFFF1EEDB),
+              ),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
@@ -949,7 +1188,7 @@ class _Item3_1PageState extends State<Item3_1Page> {
             const SizedBox(height: 20),
             Text(
               _feedback,
-              style: const TextStyle(fontSize: 18, color: Colors.deepPurple),
+              style: const TextStyle(fontSize: 18, color: Color(0xFFF1EEDB)), // Updated color
             ),
           ],
         ),
@@ -972,7 +1211,7 @@ class _Item3_2PageState extends State<Item3_2Page> {
   void _checkAnswer() {
     if (_controller.text.trim().toLowerCase() == 'friday') {
       Provider.of<SolvedItemsNotifier>(context, listen: false)
-          .markAsSolved('Item 3.2');
+          .markAsSolved('What day again?'); // Mark as solved
       setState(() {
         _feedback = 'Correct! You solved the question!';
       });
@@ -997,20 +1236,31 @@ class _Item3_2PageState extends State<Item3_2Page> {
           children: [
             const Text(
               'Question:',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontFamily: 'Proxima Nova', // Updated font family
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFFF1EEDB),
+              ),
             ),
             const SizedBox(height: 10),
             const Text(
               'The 2326 Lab is only open on a certain day. What day is that?',
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(
+                fontFamily: 'Proxima Nova', // Updated font family
+                fontSize: 18,
+                color: Color(0xFFF1EEDB),
+              ),
             ),
             const SizedBox(height: 20),
             TextField(
               controller: _controller,
               decoration: const InputDecoration(
                 labelText: 'Your Answer',
+                labelStyle: TextStyle(color: Color(0xFFF1EEDB)), // Updated label color
                 border: OutlineInputBorder(),
               ),
+              style: const TextStyle(color: Color(0xFFF1EEDB)), // Updated input text color
             ),
             const SizedBox(height: 20),
             ElevatedButton(
@@ -1020,7 +1270,7 @@ class _Item3_2PageState extends State<Item3_2Page> {
             const SizedBox(height: 20),
             Text(
               _feedback,
-              style: const TextStyle(fontSize: 18, color: Colors.deepPurple),
+              style: const TextStyle(fontSize: 18, color: Color(0xFFF1EEDB)), // Updated color
             ),
           ],
         ),
@@ -1041,9 +1291,9 @@ class _Item5_1PageState extends State<Item5_1Page> {
   String _feedback = '';
 
   void _checkAnswer() {
-    if (_controller.text.trim().toLowerCase() == 'benjamin c. craft and murray f. hawkins, jr.') { // Fixed answer validation
+    if (_controller.text.trim().toLowerCase() == 'benjamin c. craft and murray f. hawkins, jr.') {
       Provider.of<SolvedItemsNotifier>(context, listen: false)
-          .markAsSolved('Item 5.1');
+          .markAsSolved('Who are they?'); // Mark as solved
       setState(() {
         _feedback = 'Correct! You solved the question!';
       });
@@ -1068,20 +1318,31 @@ class _Item5_1PageState extends State<Item5_1Page> {
           children: [
             const Text(
               'Question:',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontFamily: 'Proxima Nova', // Updated font family
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFFF1EEDB),
+              ),
             ),
             const SizedBox(height: 10),
             const Text(
               'There are two distinct individuals who have busts on them showcased on the 3rd floor. Who are these individuals? (write their names exactly as written, use "and" to separate their names)',
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(
+                fontFamily: 'Proxima Nova', // Updated font family
+                fontSize: 18,
+                color: Color(0xFFF1EEDB),
+              ),
             ),
             const SizedBox(height: 20),
             TextField(
               controller: _controller,
               decoration: const InputDecoration(
                 labelText: 'Your Answer',
+                labelStyle: TextStyle(color: Color(0xFFF1EEDB)), // Updated label color
                 border: OutlineInputBorder(),
               ),
+              style: const TextStyle(color: Color(0xFFF1EEDB)), // Updated input text color
             ),
             const SizedBox(height: 20),
             ElevatedButton(
@@ -1091,28 +1352,9 @@ class _Item5_1PageState extends State<Item5_1Page> {
             const SizedBox(height: 20),
             Text(
               _feedback,
-              style: const TextStyle(fontSize: 18, color: Colors.deepPurple),
+              style: const TextStyle(fontSize: 18, color: Color(0xFFF1EEDB)), // Updated color
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class HelpPage extends StatelessWidget {
-  const HelpPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Help'),
-      ),
-      body: const Center(
-        child: Text(
-          'This is the Help Page.',
-          style: TextStyle(fontSize: 20),
         ),
       ),
     );

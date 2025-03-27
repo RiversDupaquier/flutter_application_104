@@ -61,6 +61,7 @@ flutter:
     - assets/fonts/images/PFT Map.webp
     - assets/fonts/images/LSU logo.png
     - assets/fonts/images/patrick-f-taylor-hall.webp
+    - assets/fonts/images/PFT Map 2nd Floor.webp
 
   fonts:
     - family: Proxima Nova
